@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Telenor Virtual Machine Visualization</title>
+{% endblock %}
+
+{% block body %}
+<div class="form">
+<h4>1. Select a zone:</h4>
+    <form action="get_computes" method="GET">
+        <div class="custom-select style="width:200px;">
+        <select name="zone" id="zone">
+            <option value="isb_exp">isb_exp</option>
+            <option value="isb_nexp">isb_nexp</option>
+            <option value="isb_exp2">isb_exp2</option>
+            <option value="isb_nexp2">isb_nexp2</option>
+        </select>
+        </div>
+        <br/>
+        <button type="submit" value="submit"><span>Submit</span></button>
+    </form>
+</div>
+{% endblock %}

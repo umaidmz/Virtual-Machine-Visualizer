@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Telenor Virtual Machine Visualization</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="form">
+    <h4>2. Select a Compute:</h4>
+    <form action="/get_data" method="GET">
+        <select name="compute" id="compute">
+            {% for i in range(len) %}
+                <option value={{compute_names[i]}}>{{compute_names[i]}}</option>
+            {% endfor %}  
+            
+        </select>
+        <br>
+        <button type="submit" value="submit"><span>Submit</span></button>
+    </form>
+</div>
+
+<div>
+    <h1>The following computes have overlapping CPUs in its Instances: </h1>
+    {% for i in range(overlaps_len) %}
+    {% if zone_overlaps[i][1] %}
+        <h2>{{zone_overlaps[i][0]}}</h2>
+        <table>
+            <tr>
+                <th>Computing Machine</th>
+                <th>Instance1-UUID</th>
+                <th>Instance2-UUID</th>
+                <th>Instance1-Name</th>
+                <th>Instance2-Name</th>
+                <th>CPUs</th>
+            </tr>
+            {% if overlap_lengths[i] != 0 %}
+            {% for j in range(overlap_lengths[i]) %}
+            <tr>
+                <td>{{zone_overlaps[i][0]}}</td>
+                <td>{{zone_overlaps[i][1][j][2]}}</td>
+                <td>{{zone_overlaps[i][1][j][3]}}</td>
+                <td>{{zone_overlaps[i][1][j][0]}}</td>
+                <td>{{zone_overlaps[i][1][j][1]}}</td>
+                <td>{{zone_overlaps[i][1][j][4]}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+    {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock %}

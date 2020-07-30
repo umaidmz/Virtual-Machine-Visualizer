@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Telenor Virtual Machine Visualization</title>
+<style>
+    td{
+        width: 100px;
+    }
+    table{
+        border: 2px black solid;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr{
+        border: 2px black solid
+    }
+
+    th{
+        border: 2px  black solid;
+    }
+
+    td{
+        border: 2px  black solid;
+        text-align: center;
+        color: red;
+    }
+
+    h1{
+        text-align:center;
+    }
+
+</style>
+<script>
+    window.onload = function () {
+    
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        zoomEnabled: true,
+        title:{
+            text: "{{compute}}"
+        },
+        axisX: {
+            title:"Memory",
+            minimum: {{minimum}},
+            maximum: {{maximum}}
+        },
+        legend:{
+            horizontalAlign:"right",
+            verticalAlign: "center"
+        },
+        axisY:{
+            title: "CPUs",
+        },
+        data: [ {% for i in range(len) %}
+            {% if i == len-1 %}
+            {
+            type: "scatter",
+            toolTipContent: "<b>Memory: </b>{x} MBs<br/><b>CPUs: </b>{y}<br/><b>Instance: </b>{{data[i][0]|safe}} ",
+            name: "{{data[i][0]|safe}}",
+            showInLegend: true,
+            dataPoints: [
+            { x: {{data[i][2]|safe}}, y: {{data[i][1]|safe}}}
+            ]
+            }
+            {% else %}
+            {
+            type: "scatter",
+            toolTipContent: "<b>Memory: </b>{x} MBs<br/><b>CPUs: </b>{y} <br/><b>Instance: </b>{{data[i][0]|safe}}",
+            name: "{{data[i][0]|safe}}",
+            showInLegend: true,
+            dataPoints: [
+            { x: {{data[i][2]|safe}}, y: {{data[i][1]|safe}}}
+            ]
+            },
+            {% endif %}
+            {% endfor %}
+        ]
+    });
+    chart.render();
+    
+    }
+    </script>
+{% endblock %}
+
+{% block body %}
+<div id="chartContainer" style="height: 500px; width: 90%;" ></div>
+<div class="overlaps">
+
+{% if overlap %}
+<h1>The following instances have overlapping CPUs:</h1>
+<table>
+<tr >
+    <th>Instance1-UUID</th>
+    <th>Instance2-UUID</th>
+    <th>Instance1-Name</th>
+    <th>Instance2-Name</th>
+    <th>CPUs</th>
+</tr>
+{% for i in range(overlap_len) %}
+<tr>
+    <td>{{overlap[i][2]}}</td>
+    <td>{{overlap[i][3]}}</td>
+    <td>{{overlap[i][0]}}</td>
+    <td>{{overlap[i][1]}}</td>
+    <td>{{overlap[i][4]}}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<h1>No Overlapping CPUs</h1>
+{% endif %}
+</div>
+<script src="{{url_for('static', filename='canvasjs.min.js')}}"></script>
+{% endblock %}
