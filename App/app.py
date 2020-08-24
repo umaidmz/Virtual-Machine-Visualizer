@@ -15,8 +15,8 @@ def index_page():
 @app.route("/get_computes", methods=["GET"]) #Set the Computing Machine
 def get_compute():
     zone = request.args["zone"]
-    filename = "../Data/"+ zone+".csv"
-    df = pd.read_csv(filename)
+    filename = "../Data/"+ zone+".txt"
+    df = pd.read_csv(filename, delim_whitespace=True, names=["Compute Name","Instance UUID", "Instance Name", "Total CPUS", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24", "F25", "F26", "F27", "F28", "F29", "F30", "F31", "F32", "F33"])
     for i in range(len(df)):
         if "-" in df["F1"][i]:
             df.drop(i, inplace=True)
