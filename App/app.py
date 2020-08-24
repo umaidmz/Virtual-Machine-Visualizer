@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request
 import numpy as np
 import pandas as pd
+import os
 import json
 app = Flask(__name__)
 
@@ -10,7 +11,11 @@ Overlaps={}
 
 @app.route("/") #Main INDEX Page & Set the ZONE of your computation
 def index_page():
-    return render_template("index.html")
+    path = "../Data"
+    dir_list = os.listdir(path)
+    for i in range(len(dir_list)):
+        dir_list[i] = os.path.splitext(dir_list[i])[0]
+    return render_template("index.html", dir_list = dir_list, dir_list_len = len(dir_list))
 
 @app.route("/get_computes", methods=["GET"]) #Set the Computing Machine
 def get_compute():

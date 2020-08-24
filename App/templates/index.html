@@ -10,10 +10,9 @@
     <form action="get_computes" method="GET">
         <div class="custom-select style="width:200px;">
         <select name="zone" id="zone">
-            <option value="isb_exp">isb_exp</option>
-            <option value="isb_nexp">isb_nexp</option>
-            <option value="isb_exp_2">isb_exp_2</option>
-            <option value="isb_nexp_2">isb_nexp_2</option>
+        {% for i in range(dir_list_len) %}    
+            <option value={{dir_list[i]}}>{{dir_list[i]}}</option>
+        {% endfor %}    
         </select>
         </div>
         <br/>
